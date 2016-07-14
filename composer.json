@@ -1,0 +1,19 @@
+{
+    "name": "gavaez/ssga",
+    "description": "Simple Server Side Google Analytics",
+    "version": "1.0",
+    "keywords": ["ga", "google", "analytics"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aleksandr Nikitin",
+            "email": "nikitin82@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap": ["ssga.php"]
+    },
+    "require": {
+        "php": ">=5.4"
+    }
+}

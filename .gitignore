@@ -1,0 +1,5 @@
+# Composer PHAR
+/composer.phar
+
+# PhpStorm project
+.idea/
