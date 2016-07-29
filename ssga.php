@@ -1,7 +1,5 @@
 <?php
 
-namespace Measurement;
-
 /**
  * Simple Server Side Google Analytics
  *
@@ -124,10 +122,10 @@ class SSGA
 	}
 
     /**
-     * @param productField[] $items
-     * @param int            $step
-     * @param string         $value
-     * @param mixed[]        $params [optional]
+     * @param GA\productFieldObject[] $items
+     * @param int                     $step
+     * @param string                  $value
+     * @param mixed[]                 $params [optional]
      *
      * @return bool
      */
@@ -138,14 +136,14 @@ class SSGA
     }
 
     /**
-     * @param productField[] $items
-     * @param int            $ti          transaction identifier
-     * @param string         $affiliation
-     * @param float          $revenue
-     * @param float          $shipping    [optional]
-     * @param float          $tax         [optional]
-     * @param string         $coupon      [optional]
-     * @param mixed[]        $params      [optional]
+     * @param GA\productFieldObject[] $items
+     * @param int                     $ti          transaction identifier
+     * @param string                  $affiliation
+     * @param float                   $revenue
+     * @param float                   $shipping    [optional]
+     * @param float                   $tax         [optional]
+     * @param string                  $coupon      [optional]
+     * @param mixed[]                 $params      [optional]
      *
      * @return bool
      */
@@ -225,7 +223,7 @@ class SSGA
 	}
 
     /**
-     * @param productField[] $items
+     * @param GA\productFieldObject[] $items
      *
      * @return mixed[]
      */
@@ -243,7 +241,7 @@ class SSGA
 
         $params = [];
         foreach ($items as $item) {
-            if ($item instanceof productField) {
+            if ($item instanceof GA\productFieldObject) {
                 foreach ($map as $param => $attr) {
                     $params["pr$item->position$param"] = $item->$attr;
                 }
@@ -251,39 +249,5 @@ class SSGA
         }
 
         return $params;
-    }
-}
-
-
-/**
- * GA productField struct
- */
-final class productField
-{
-    /** @var int */
-    public $id;
-    /** @var string */
-    public $name;
-    /** @var string */
-    public $brand;
-    /** @var string */
-    public $category;
-    /** @var string */
-    public $variant;
-    /** @var float */
-    public $price;
-    /** @var int */
-    public $quantity;
-    /** @var int */
-    public $position;
-
-    /** @param mixed[] $attributes */
-    public function __construct(array $attributes = [])
-    {
-        foreach ($attributes as $attr => $value) {
-            if (property_exists($this, $attr)) {
-                $this->$attr = $value;
-            }
-        }
     }
 }
