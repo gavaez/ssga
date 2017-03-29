@@ -13,7 +13,7 @@
 class SSGA
 {
     const GA_COOKIE  = '_ga';
-    const GA_VERSION = '1.2';
+    const GA_VERSION = 1;
 
     // Checkout steps
     const CHECKOUT_PAYMENT  = 1;
@@ -47,16 +47,12 @@ class SSGA
     }
 
     /**
-     * @param string $tid tracking identifier [optional]
+     * @return string
      */
-    public function reset($tid = null)
+    public static function getClientId()
     {
-        if ($tid !== null) {
-            $this->tid = $tid;
-        }
-
         if (array_key_exists(self::GA_COOKIE, $_COOKIE)) {
-            @list(,, $cid) = explode('.', $_COOKIE[self::GA_COOKIE], 3);
+            @list(,, $cid) = explode('.', $_COOKIE[self::GA_COOKIE], 4);
         }
 
         if (empty($cid)) {
@@ -71,10 +67,28 @@ class SSGA
                 mt_rand(0, 0xffff),
                 mt_rand(0, 0xffff)
             );
-            $_COOKIE[self::GA_COOKIE] = sprintf('GA%s.%s', self::GA_VERSION, $cid);
+            $_COOKIE[self::GA_COOKIE] = sprintf(
+                'GA%u.%u.%s.%u',
+                self::GA_VERSION,
+                count_chars($_SERVER['HTTP_HOST'])[ord('.')] + 1,
+                $cid,
+                time()
+            );
         }
 
-        $this->params = ['v' => 1, 'tid' => $this->tid, 'cid' => $cid];
+        return $cid;
+    }
+
+    /**
+     * @param string $tid tracking identifier [optional]
+     */
+    public function reset($tid = null)
+    {
+        if ($tid !== null) {
+            $this->tid = $tid;
+        }
+
+        $this->params = ['v' => 1, 'tid' => $this->tid, 'cid' => static::getClientId()];
     }
 
     /**
