@@ -69,11 +69,10 @@ class SSGA
                 mt_rand(0, 0xffff)
             );
             $_COOKIE[self::GA_COOKIE] = sprintf(
-                'GA%u.%u.%s.%u',
+                'GA%u.%u.%s',
                 self::GA_VERSION,
                 (array_key_exists('HTTP_HOST', $_SERVER) ? count_chars($_SERVER['HTTP_HOST'])[ord('.')] : 0) + 1,
-                $cid,
-                time()
+                $cid
             );
         }
 
