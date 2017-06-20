@@ -7,6 +7,7 @@
  *
  * @link https://developers.google.com/analytics/devguides/collection/protocol/v1/
  *
+ * @property-read string $_ga cookie value
  * @property-read string $tid tracking identifier
  * @property      int    $uid user identifier
  */
@@ -220,6 +221,11 @@ class SSGA
      */
     public function __get($name)
     {
+        if (!strcasecmp($name, '_ga')) {
+            static::getClientId();
+            return $_COOKIE[self::GA_COOKIE];
+        }
+
         return isset($this->$name) ? $this->params[$name] : null;
     }
 
